@@ -4,17 +4,22 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 
+from .logic.ai_detection import score_ai_detection
+
 app = FastAPI()
+
+
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Replace with your frontend URL in production
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 
+# BaseModel class for storing text content from user
 class TextRequest(BaseModel):
     text: str
 
@@ -22,11 +27,13 @@ class TextRequest(BaseModel):
 
 @app.post("/analyse")
 def analyse_text(request: TextRequest):
-    score = 78
+    user_text: str = request.text
+
+    sentence_len = score_ai_detection(user_text)
 
     return {
-        "ai_score": score,
-        "explanation": "This text is AI written due to..."
+        "ai_score": sentence_len,
+        "explanation": "The Above is the sentence length"
     }
 
 
