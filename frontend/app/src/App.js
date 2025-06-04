@@ -30,7 +30,7 @@ function App() {
       {result && (
         <div className="result">
           <h2>Results</h2>
-          <p><strong>AI Likelihood:</strong> {result.ai_score}%</p>
+          <p><strong>AI Likelihood:</strong> {result.ai_score}</p>
           <p><strong>Explanation:</strong> {result.explanation}</p>
         </div>
       )}

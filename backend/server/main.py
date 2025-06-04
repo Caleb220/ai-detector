@@ -5,6 +5,7 @@ from pydantic import BaseModel
 
 
 from .logic.ai_detection import score_ai_detection
+from .logic.utils import is_valid_text
 
 app = FastAPI()
 
@@ -29,10 +30,17 @@ class TextRequest(BaseModel):
 def analyse_text(request: TextRequest):
     user_text: str = request.text
 
+    is_valid_input = is_valid_text(user_text)
+    if is_valid_text != "Success":
+        return {
+            "ai_score": "N/A",
+            "explanation": is_valid_input
+        }
+
     sentence_len = score_ai_detection(user_text)
 
     return {
-        "ai_score": sentence_len,
+        "ai_score": f"{sentence_len}%",
         "explanation": "The Above is the sentence length"
     }
 
