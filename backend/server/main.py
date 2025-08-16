@@ -3,6 +3,7 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
+from .logic import analyse_text as compute_score
 
 app = FastAPI()
 
@@ -19,14 +20,11 @@ class TextRequest(BaseModel):
     text: str
 
 
-
 @app.post("/analyse")
 def analyse_text(request: TextRequest):
-    score = 78
+    score, explanation = compute_score(request.text)
 
     return {
         "ai_score": score,
-        "explanation": "This text is AI written due to..."
+        "explanation": explanation,
     }
-
-
